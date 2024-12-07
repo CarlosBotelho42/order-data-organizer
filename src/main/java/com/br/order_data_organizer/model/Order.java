@@ -23,6 +23,7 @@ public class Order {
 
     private BigDecimal productValue;
 
+    @Column(name = "order_date")
     private LocalDate date;
 
     public Order() {}

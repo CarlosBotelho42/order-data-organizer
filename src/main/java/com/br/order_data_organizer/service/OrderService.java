@@ -123,6 +123,7 @@ public class OrderService {
             orderRepository.saveAll(orders);
 
         } catch (Exception e) {
+            e.printStackTrace();
             throw new RuntimeException("Erro ao processar o arquivo... =(", e);
         }
     }
