@@ -78,6 +78,14 @@ As seguintes tecnologias foram utilizadas no desenvolvimento deste projeto:
 
 ---
 
+## Arquitetura
+
+Este projeto utiliza o padrão de projeto MVC, estruturado da seguinte forma:
+
+- Model: Responsável pela representação dos dados e das entidades do sistema, incluindo pedido e suas informações.
+- View: Exposta através de APIs REST (implementada pelo Spring Boot), que interage com os usuários ou sistemas externos.
+- Controller: Lida com as requisições recebidas, processa os dados, realiza validações e delega responsabilidades ao serviço e ao repositório.
+
 ## Fluxograma
 
 ![Fluxograma do processo do arquivo](images/fluxograma.png)
