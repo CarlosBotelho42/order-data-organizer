@@ -1,0 +1,10 @@
+version: '3.8'
+
+services:
+  oracle-db:
+    image: gvenzl/oracle-xe
+    container_name: oracle-db
+    environment:
+      ORACLE_PASSWORD: senhaforte
+    ports:
+      - "1521:1521"
