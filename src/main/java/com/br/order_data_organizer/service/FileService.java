@@ -36,7 +36,7 @@ public class FileService {
         return new BufferedReader(new InputStreamReader(file.getInputStream(), StandardCharsets.UTF_8));
     }
 
-    private List<Order> normalizeOrderLines (BufferedReader reader) throws IOException {
+    List<Order> normalizeOrderLines(BufferedReader reader) throws IOException {
             List<Order> orders = new ArrayList<>();
             String line;
 
@@ -49,7 +49,7 @@ public class FileService {
             return orders;
     }
 
-    private Order setOrderLines(String line) {
+    public Order setOrderLines(String line) {
         String userId = line.substring(0, 10).trim();
         String userName = line.substring(10, 55).trim();
         String orderId = line.substring(55, 65).trim();
