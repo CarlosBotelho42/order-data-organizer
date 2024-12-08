@@ -25,10 +25,12 @@ Com isso, é possível realizar consultas específicas, como:
    ```bash
    docker-compose up -d --build
    ```
+   
 2. Build da aplicação com Maven:  
    ```bash
    mvn clean install
-   ``
+   ```
+   
 2. Rode a aplicação com a JVM do Java:  
    ```bash
    java -jar target/order-data-organization.jar
