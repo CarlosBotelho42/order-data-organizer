@@ -16,7 +16,7 @@ import java.util.Optional;
 public interface OrderRepository extends JpaRepository<Order, Long>{
 
     @Query(value = """
-    SELECT * FROM orders
+    SELECT * FROM dvsys.orders
     WHERE order_date BETWEEN :startDate AND :endDate
     """, nativeQuery = true)
     List<Order> findByDateRange(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
