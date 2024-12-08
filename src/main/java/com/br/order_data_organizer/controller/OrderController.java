@@ -1,6 +1,7 @@
 package com.br.order_data_organizer.controller;
 
 import com.br.order_data_organizer.dto.OrderDTO;
+import com.br.order_data_organizer.service.FileService;
 import com.br.order_data_organizer.service.OrderService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,15 +18,17 @@ import java.util.List;
 public class OrderController {
 
     private final OrderService orderService;
+    private final FileService fileService;
 
-    public OrderController(OrderService orderService) {
+    public OrderController(OrderService orderService, FileService fileService) {
         this.orderService = orderService;
+        this.fileService = fileService;
     }
 
     @PostMapping("/upload")
     public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file) {
         try {
-            orderService.processAndSaveFile(file);
+            fileService.processDataFile(file);
             return ResponseEntity.status(HttpStatus.CREATED).body("Arquivo processado e salvo com sucesso!");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erro ao processar o arquivo: " + e.getMessage());

@@ -28,9 +28,12 @@ public class OrderService {
         this.orderRepository = orderRepository;
     }
 
+    public void saveOrders(List<Order> orders) {
+        orderRepository.saveAll(orders);
+    }
+
     public Page<OrderDTO> findAllWithPagination(Pageable pageable) {
         Page<Order> pagedOrders = orderRepository.findAll(pageable);
-
         return pagedOrders.map(order -> buildOrderDTO(order.getOrderId(), List.of(order)));
     }
 
@@ -47,10 +50,10 @@ public class OrderService {
         }
 
         return orders.stream()
-                .collect(Collectors.groupingBy(Order::getOrderId)) // Agrupa pelo orderId
+                .collect(Collectors.groupingBy(Order::getOrderId))
                 .entrySet()
                 .stream()
-                .map(entry -> buildOrderDTO(entry.getKey(), entry.getValue())) // Usa o método auxiliar
+                .map(entry -> buildOrderDTO(entry.getKey(), entry.getValue()))
                 .toList();
     }
 
@@ -88,43 +91,5 @@ public class OrderService {
         return orders.stream()
                 .map(order -> new ProductDTO(order.getProductId(), order.getProductValue().toString()))
                 .toList();
-    }
-
-
-    //TODO Separar em uma classe exclusva para processamento de arquvos
-    //TODO Separar em varios metodos
-    public void processAndSaveFile(MultipartFile file) {
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream(), StandardCharsets.UTF_8))) {
-            List<Order> orders = new ArrayList<>();
-            String line;
-
-            while ((line = reader.readLine()) != null) {
-                if (line.trim().isEmpty()) continue;
-
-                // Processa cada linha do arquivo
-                String userId = line.substring(0, 10).trim();
-                String userName = line.substring(10, 55).trim();
-                String orderId = line.substring(55, 65).trim();
-                String productId = line.substring(65, 75).trim();
-                BigDecimal productValue = new BigDecimal(line.substring(75, 87).trim());
-                LocalDate purchaseDate = LocalDate.parse(line.substring(87, 95).trim(), DateTimeFormatter.ofPattern("yyyyMMdd"));
-
-                // Cria um objeto Order com os dados extraidos
-                Order order = new Order();
-                order.setOrderId(Long.parseLong(orderId));
-                order.setUserId(Long.parseLong(userId));
-                order.setUserName(userName);
-                order.setProductId(Long.parseLong(productId));
-                order.setProductValue(productValue);
-                order.setDate(purchaseDate);
-                orders.add(order);
-            }
-
-            orderRepository.saveAll(orders);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("Erro ao processar o arquivo... =(", e);
-        }
     }
 }
