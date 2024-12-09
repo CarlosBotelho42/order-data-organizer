@@ -33,7 +33,7 @@ Com isso, é possível realizar consultas específicas, como:
    
 2. Rode a aplicação com a JVM do Java:  
    ```bash
-   java -jar target/order-data-organization.jar
+   java -jar target/order-data-organizer.jar
    ```
 
 ---
