@@ -1,6 +1,8 @@
 package com.br.order_data_organizer.service;
 
+import com.br.order_data_organizer.exception.FileProcessingException;
 import com.br.order_data_organizer.model.Order;
+import com.br.order_data_organizer.util.ErrorMessages;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,7 +30,7 @@ public class FileService {
             List<Order> orders = normalizeOrderLines(reader);
             orderService.saveOrders(orders);
         } catch (Exception e) {
-            throw new RuntimeException("Erro ao processar o arquivo... =(", e);
+            throw new FileProcessingException(ErrorMessages.FILE_PROCESSING_ERROR, e);
         }
     }
 
@@ -50,21 +52,25 @@ public class FileService {
     }
 
     public Order setOrderLines(String line) {
-        String userId = line.substring(0, 10).trim();
-        String userName = line.substring(10, 55).trim();
-        String orderId = line.substring(55, 65).trim();
-        String productId = line.substring(65, 75).trim();
-        BigDecimal productValue = new BigDecimal(line.substring(75, 87).trim());
-        LocalDate purchaseDate = LocalDate.parse(line.substring(87, 95).trim(), DateTimeFormatter.ofPattern("yyyyMMdd"));
+        try {
+            String userId = line.substring(0, 10).trim();
+            String userName = line.substring(10, 55).trim();
+            String orderId = line.substring(55, 65).trim();
+            String productId = line.substring(65, 75).trim();
+            BigDecimal productValue = new BigDecimal(line.substring(75, 87).trim());
+            LocalDate purchaseDate = LocalDate.parse(line.substring(87, 95).trim(), DateTimeFormatter.ofPattern("yyyyMMdd"));
 
-        Order order = new Order();
-        order.setOrderId(Long.parseLong(orderId));
-        order.setUserId(Long.parseLong(userId));
-        order.setUserName(userName);
-        order.setProductId(Long.parseLong(productId));
-        order.setProductValue(productValue);
-        order.setDate(purchaseDate);
+            Order order = new Order();
+            order.setOrderId(Long.parseLong(orderId));
+            order.setUserId(Long.parseLong(userId));
+            order.setUserName(userName);
+            order.setProductId(Long.parseLong(productId));
+            order.setProductValue(productValue);
+            order.setDate(purchaseDate);
 
-        return order;
+            return order;
+        }catch (Exception e){
+            throw new IllegalArgumentException(ErrorMessages.LINE_PROCESSING_ERROR + line, e);
+        }
     }
 }

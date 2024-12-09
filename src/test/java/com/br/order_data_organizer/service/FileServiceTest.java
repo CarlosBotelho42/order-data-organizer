@@ -91,7 +91,7 @@ class FileServiceTest {
     void shouldThrowExceptionForInvalidLine() {
         String invalidLine = "666";
 
-        assertThrows(StringIndexOutOfBoundsException.class, () -> {
+        assertThrows(IllegalArgumentException.class, () -> {
             fileService.setOrderLines(invalidLine);
         });
     }

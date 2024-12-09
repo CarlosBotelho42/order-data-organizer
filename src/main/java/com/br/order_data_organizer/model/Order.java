@@ -26,6 +26,16 @@ public class Order {
     @Column(name = "order_date")
     private LocalDate date;
 
+    public Order(Long id, Long orderId, Long userId, String userName, Long productId, BigDecimal productValue, LocalDate date) {
+        this.id = id;
+        this.orderId = orderId;
+        this.userId = userId;
+        this.userName = userName;
+        this.productId = productId;
+        this.productValue = productValue;
+        this.date = date;
+    }
+
     public Order() {}
 
     public Long getId() {

@@ -3,8 +3,10 @@ package com.br.order_data_organizer.service;
 import com.br.order_data_organizer.dto.OrderDTO;
 import com.br.order_data_organizer.dto.ProductDTO;
 import com.br.order_data_organizer.dto.UserDTO;
+import com.br.order_data_organizer.exception.OrderNotFoundException;
 import com.br.order_data_organizer.model.Order;
 import com.br.order_data_organizer.repository.OrderRepository;
+import com.br.order_data_organizer.util.ErrorMessages;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -34,14 +36,18 @@ public class OrderService {
 
     public OrderDTO getOrderById(Long orderId) {
         List<Order> orders = orderRepository.findByOrderId(orderId);
+        if (orders.isEmpty()) {
+            throw new OrderNotFoundException(ErrorMessages.ORDER_NOT_FOUND);
+        }
         return buildOrderDTO(orderId, orders);
     }
+
 
     public List<OrderDTO> findOrdersByDateRange(LocalDate startDate, LocalDate endDate) {
         List<Order> orders = orderRepository.findByDateRange(startDate, endDate);
 
         if (orders.isEmpty()) {
-            throw new RuntimeException("Nenhum pedido encontrado no intervalo especificado.");
+            throw new RuntimeException(ErrorMessages.DATE_RANGE_NOT_FOUND);
         }
 
         return orders.stream()
@@ -55,7 +61,7 @@ public class OrderService {
 
     private OrderDTO buildOrderDTO(Long orderId, List<Order> orders) {
         if (orders.isEmpty()) {
-            throw new RuntimeException("Nenhum pedido encontrado.");
+            throw new OrderNotFoundException(ErrorMessages.UNAVAILABLE_ORDERS);
         }
 
         Order firstOrder = orders.getFirst();
@@ -76,7 +82,7 @@ public class OrderService {
         return new UserDTO(order.getUserId(), order.getUserName());
     }
 
-    private BigDecimal calculateTotal(List<Order> orders) {
+    public BigDecimal calculateTotal(List<Order> orders) {
         return orders.stream()
                 .map(Order::getProductValue)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
