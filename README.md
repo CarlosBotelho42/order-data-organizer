@@ -79,7 +79,9 @@ As seguintes tecnologias foram utilizadas no desenvolvimento deste projeto:
 
 - **[Java 21](https://www.oracle.com/java)**  
 - **[Oracle Database](https://docs.oracle.com/en/database/oracle/oracle-database/index.html)**  
-- **[Docker](https://docs.docker.com/)**  
+- **[Docker](https://docs.docker.com/)**
+- **[Junit](https://junit.org/junit5/docs/current/user-guide/)**
+- **[Mockito](https://site.mockito.org/)**
 
 ---
 
