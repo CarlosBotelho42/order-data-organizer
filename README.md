@@ -42,7 +42,7 @@ Com isso, é possível realizar consultas específicas, como:
 
 ### 1. **Carregar arquivos**
 Endpoint para carregar um arquivo TXT e processar os dados:
-- **POST**: `http://localhost:8081/orders/upload`  
+- **POST**: `http://localhost:8081/files/upload`  
   - Enviar o arquivo no formato **Form Data**.  
 
 ![Exemplo de envio de arquivo](images/uploadFile.png)
