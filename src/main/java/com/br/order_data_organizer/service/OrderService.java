@@ -47,7 +47,7 @@ public class OrderService {
         List<Order> orders = orderRepository.findByDateRange(startDate, endDate);
 
         if (orders.isEmpty()) {
-            throw new RuntimeException(ErrorMessages.DATE_RANGE_NOT_FOUND);
+            throw new OrderNotFoundException(ErrorMessages.DATE_RANGE_NOT_FOUND);
         }
 
         return orders.stream()
